@@ -66,6 +66,7 @@ public class CompanionAlert : MonoBehaviour {
 
     private void ChangeLights(int s)
     {
+        // Debug.Log("Chaning Lights");
         if (state == s)
             return;
 

@@ -62,7 +62,7 @@ public class VisibilityLogic : MonoBehaviour
     {
         if((isSeen && wasBurned) || overrideTests)
         {
-            Debug.Log("Reposition(). Override: " + overrideTests);
+            // Debug.Log("Reposition(). Override: " + overrideTests);
             isSeen = false;
             wasBurned = false;
 
@@ -86,7 +86,7 @@ public class VisibilityLogic : MonoBehaviour
                             {
                                 if(Vector3.Distance(g.transform.position, playerTransform.position) >= minRelocationDist)
                                 {
-                                    Debug.LogWarning(pos);
+                                    // Debug.LogWarning(pos);
                                     transform.position = pos;
                                     b = true;
                                     GameObject.Destroy(g);

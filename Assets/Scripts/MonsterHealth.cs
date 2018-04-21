@@ -45,7 +45,7 @@ public class MonsterHealth : MonoBehaviour {
 
         while (true && !isDead)
         {
-            Debug.Log("Taking Damage");
+            // Debug.Log("Taking Damage");
             currentHealth -= amt;
             if (currentHealth <= 0)
             {
@@ -62,7 +62,7 @@ public class MonsterHealth : MonoBehaviour {
         isDead = true;
         Debug.Log("MONSTER DOWN!");
         yield return new WaitForSeconds(1);
-        Debug.Log("Respawning");
+        // Debug.Log("Respawning");
         visLogic.Reposition(false);
         isDead = false;
         currentHealth = maxHealth;

@@ -33,6 +33,7 @@ public class CompanionMovement : MonoBehaviour {
 	
     public void StopMoving()
     {
+        Debug.LogError("Stop moving");
         agent.SetDestination(transform.position);
     }
 
@@ -47,6 +48,8 @@ public class CompanionMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float distToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        // Debug.Log("Moving to player: " + distToPlayer);
 
         if (state.currentState == CompanionState.CompanionStateList.following)
         {

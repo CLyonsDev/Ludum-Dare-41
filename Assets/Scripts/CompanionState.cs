@@ -26,12 +26,13 @@ public class CompanionState : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        currentState = CompanionStateList.following;
+        SetState(CompanionStateList.following);
 	}
 	
     public void SetState(CompanionStateList newState)
     {
         currentState = newState;
+        GetComponent<CompanionMovement>().reachedDest = false;
         Debug.Log("Switching state to " + newState);
     }
 }
