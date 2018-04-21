@@ -23,6 +23,5 @@ public class PlayerMovement : MonoBehaviour {
         Vector3 finalV3 = horizV3 + vertV3;
 
         characterRigidbody.MovePosition(transform.position + finalV3 * moveSpeed * Time.fixedDeltaTime);
-        //characterRigidbody.position = transform.position + finalV3 * moveSpeed * Time.fixedDeltaTime;
 	}
 }

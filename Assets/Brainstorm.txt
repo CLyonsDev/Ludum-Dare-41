@@ -46,14 +46,15 @@ Throw at enemies & must catch it when it bounces back
 
 Virtual Pet & Horror
 ====================
-Pet follows you around
+Pet follows you around [X]
 	-Acts as a monster detector
-		- Think of the Aliens detector
+		- Think of the Aliens detector [X]
+		- Changes color of light when monster is close [X]
 		- Growls when monster is somewhat close
 		- "Barks" when monster is very close
-Pet has needs that must be met
+Pet has needs that must be met [X]
 	- Food & Drink (Batteries & Oil)
-	- Play (Ball)
+	- Play (Ball) [X]
 	- Rest (Recharge)
 
 Player is able to bring up tablet with pet stats on it so they know what to do
