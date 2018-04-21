@@ -9,6 +9,8 @@ public class CompanionAlert : MonoBehaviour {
 
     public Light[] allLights;
 
+    private RotateOverTime dogLight;
+
     [SerializeField]
     private Color[] lightColors;
     private Color prevColor;
@@ -25,8 +27,8 @@ public class CompanionAlert : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        lightContainer = transform.Find("Lights");
-        allLights = lightContainer.GetComponentsInChildren<Light>();
+        allLights = GetComponentsInChildren<Light>();
+        dogLight = GetComponentInChildren<RotateOverTime>();
 
         SetAlertStatus(true);
     }
@@ -42,13 +44,16 @@ public class CompanionAlert : MonoBehaviour {
         if(dist <= warningDist && dist > dangerDist)
         {
             ChangeLights(1);
+            dogLight.SetRotSpeed(1);
         }else if(dist <= dangerDist)
         {
             ChangeLights(2);
+            dogLight.SetRotSpeed(2);
         }
         else
         {
             ChangeLights(0);
+            dogLight.SetRotSpeed(0);
         }
 
 

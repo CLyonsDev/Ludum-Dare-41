@@ -1,0 +1,25 @@
+Models should be low poly(?)
+
+Required Models:
+- Robot Dog
+- Battery
+- Oil Can
+- Key
+- KeyCard
+- Flashlight
+
+Oil Can:
+http://i1.adis.ws/i/washford/589160?w=637&h=403
+
+Robot Dog:
+ - Must have light on top of head
+	- Alarm Light
+		- https://ae01.alicdn.com/kf/HTB1KJadPVXXXXcAXVXXq6xXFXXX2/220-24-12V-Sound-Light-Alarm-Warning-Light-Signal-lamp-Buzzer-Rotating-Beacon.jpg_640x640.jpg
+		- https://i.ebayimg.com/images/g/wawAAOSwA3dYNlXm/s-l300.jpg
+	- Light case MUST be white translucent
+		- The ingame light will color the "glass"
+ - Mouth should be able to open?
+	- If not possible in time that is okay.
+
+Battery:
+ - Should look like the kind of battery that would go in *the* flashlight
