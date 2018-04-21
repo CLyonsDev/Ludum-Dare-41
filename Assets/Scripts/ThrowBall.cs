@@ -13,6 +13,9 @@ public class ThrowBall : MonoBehaviour {
     private Rigidbody rb;
     private Transform hand;
 
+    private bool shouldSwitch = false;
+    public bool canSwitch = true;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
@@ -22,7 +25,10 @@ public class ThrowBall : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Fire1") && !isThrown)
+        if (CollectItem._Instance.lookingAtItem || CollectItem._Instance.lookingAtCompanion)
+            return;
+
+        if (Input.GetButtonDown("Fire1") && !isThrown && !CollectItem._Instance.lookingAtItem)
         {
             travelTime = 0.0f;
             isThrown = true;
@@ -37,11 +43,20 @@ public class ThrowBall : MonoBehaviour {
 
             //! DONT DO THIS EVER. OFFICIAL GAMEJAM WORKAROUND(tm)(c)
             CompanionNeeds._Instance.transform.GetComponent<CompanionMovement>().reachedDest = false;
+
+            canSwitch = false;
         }
 
         if (isThrown)
         {
             travelTime += Time.deltaTime;
+        }
+
+        if(transform.position.y <= -30)
+        {
+            // We have probably fallen out of the map.
+            Debug.Log("Ball has fallen out of map!");
+            ReturnBall();
         }
 	}
 
@@ -77,5 +92,11 @@ public class ThrowBall : MonoBehaviour {
         transform.SetParent(hand);
         transform.localPosition = Vector3.zero;
         rb.isKinematic = true;
+
+        //canSwitch = true;
+        //if (shouldSwitch)
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
     }
 }

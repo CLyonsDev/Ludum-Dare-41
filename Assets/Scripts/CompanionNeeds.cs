@@ -17,11 +17,12 @@ public class CompanionNeeds : MonoBehaviour {
     private int maxEnergy = 100;
     [SerializeField]
     private float currentEnergy;
-    private float energyLossPerTick = 0.1f;
+    private float energyLossPerTick = 0.1f; // 0.1f
     private int energyRechargeRate = 1;
+    private float reactivateThreshold = 25f;
 
     [SerializeField]
-    private bool isResting = false;
+    public bool isResting = false;
 
     private float tickRate = 0.5f;
 
@@ -62,11 +63,24 @@ public class CompanionNeeds : MonoBehaviour {
     private IEnumerator Recharge()
     {
         isResting = true;
-        while(currentEnergy < maxEnergy)
+        CompanionState._Instance.SetState(CompanionState.CompanionStateList.idle);
+        Light[] lights = GetComponent<CompanionAlert>().allLights;
+        foreach (Light l in lights)
+        {
+            l.intensity = 0.5f;
+        }
+        GetComponent<CompanionMovement>().StopMoving();
+        while (currentEnergy < reactivateThreshold)
         {
             yield return new WaitForSeconds(0.2f);
             currentEnergy = Mathf.Clamp(currentEnergy + energyRechargeRate, 0, maxEnergy);
         }
+        CompanionState._Instance.SetState(CompanionState.CompanionStateList.following);
+        foreach (Light l in lights)
+        {
+            l.intensity = 1f;
+        }
+        isResting = false;
     }
 
     private void CheckStats()
@@ -75,6 +89,26 @@ public class CompanionNeeds : MonoBehaviour {
         {
             Debug.LogError("Out of energy! Recharging...");
             StartCoroutine(Recharge());
+        }
+
+        if(currentHappiness <= 0)
+        {
+            // Debug.LogError("Out of happiness! I am anger........");
+            GetComponent<CompanionAlert>().SetAlertStatus(false);
+        }
+        else
+        {
+            GetComponent<CompanionAlert>().SetAlertStatus(true);
+        }
+
+        if(currentFood <= 0)
+        {
+            // I AM STARVINGGGGGG
+            GetComponent<CompanionMovement>().UpdateSpeed(false);
+        }
+        else
+        {
+            GetComponent<CompanionMovement>().UpdateSpeed(true);
         }
     }
 
@@ -92,6 +126,11 @@ public class CompanionNeeds : MonoBehaviour {
     public void AddEnergy(float amt)
     {
         currentEnergy = Mathf.Clamp(currentEnergy + amt, 0f, maxEnergy);
+    }
+
+    public float[] GetStats()
+    {
+        return new float[] { currentFood / maxFood, currentHappiness / maxHappiness, currentEnergy / maxEnergy};
     }
     #endregion
 }

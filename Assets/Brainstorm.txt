@@ -44,6 +44,7 @@ Basketball & Shoot-em-up
 Doom-ish game where your weapon is a basketball
 Throw at enemies & must catch it when it bounces back
 
+
 Virtual Pet & Horror
 ====================
 Pet follows you around [X]
@@ -57,18 +58,33 @@ Pet has needs that must be met [X]
 	- Play (Ball) [X]
 	- Rest (Recharge)
 
-Player is able to bring up tablet with pet stats on it so they know what to do
+---- Inventory ------
+-> Batteries stored and instantly refil when LMB held down and battery drained
+
+Penalties for not fufilling needs:
+- Food & Drink -> Lower Speed [X]
+- Happiness -> Lower Detection Range [X]
+- Rest -> Cannot Move & Light Dimmed [X]
+
+Player is able to bring up tablet with pet stats on it so they know what to do [X]
 
 Recharge pads allow pet to rest
 	- Emit dim light that repels monster
 
 Player has flashlight
-	- Batteries drain rapidly as it is used
-	- Batteries recharge slowly over time
+	- Batteries drain rapidly as it is used [X]
+	- Batteries recharge slowly over time [X]
 		- Can also be replaced by a pickup
-Monster starts in random location certain distance from player
-Monster cannot move if flashlight is on it
-If monster is seen with flashlight and then player leaves view, monster has 50% chance to teleport to a new place in a min/max AOE around the player
+Monster starts in random location certain distance from player [-]
+Monster cannot move if flashlight is on it [X]
+If monster is seen with flashlight and then player leaves view, monster has 50% chance to teleport to a new place in a min/max AOE around the player [X]
+
+------ EXTRAS ----------
+If we have time, here are things that would be cool:
+- Interacting with companion (petting, etc)
+- Companion Idle Behaviour (wandering in small aoe)
+- Opening Cutscene
+- Fun little ingame audio cutscene clips
 
 STORY:
 Moonlight Maximum prequel

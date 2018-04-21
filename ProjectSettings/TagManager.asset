@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ball
   - Monster
+  - Pickup
+  - ResourceTextContainer
+  - Crosshair
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - Companion
   - Ball
   - Monster
-  - 
+  - Collectable
   - 
   - 
   - 

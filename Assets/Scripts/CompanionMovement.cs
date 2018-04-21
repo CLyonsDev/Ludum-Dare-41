@@ -9,6 +9,9 @@ public class CompanionMovement : MonoBehaviour {
     private Transform ballTransform;
     private NavMeshAgent agent;
 
+    private float bestSpeed = 2.5f;
+    private float worstSpeed = 0.85f;
+
     private float stopDist;
     private float followDist = 6;
 
@@ -24,10 +27,23 @@ public class CompanionMovement : MonoBehaviour {
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         ballTransform = GameObject.FindGameObjectWithTag("Ball").transform;
-        ballTransform.gameObject.SetActive(false);
+        // ballTransform.gameObject.SetActive(false);
         agent.SetDestination(playerTransform.position);
 	}
 	
+    public void StopMoving()
+    {
+        agent.SetDestination(transform.position);
+    }
+
+    public void UpdateSpeed(bool notStarving)
+    {
+        if (notStarving)
+            agent.speed = bestSpeed;
+        else
+            agent.speed = worstSpeed;
+    }
+
 	// Update is called once per frame
 	void Update () {
         float distToPlayer = Vector3.Distance(transform.position, playerTransform.position);

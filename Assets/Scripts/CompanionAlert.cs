@@ -7,7 +7,7 @@ public class CompanionAlert : MonoBehaviour {
     private Transform lightContainer;
     private Transform monsterTransform;
 
-    Light[] allLights;
+    public Light[] allLights;
 
     [SerializeField]
     private Color[] lightColors;
@@ -15,13 +15,20 @@ public class CompanionAlert : MonoBehaviour {
 
     private int state = 0; // 0 = Normal, 1 = Alert, 2 = Danger
 
-    private float warningDist = 25f;
-    private float dangerDist = 12f;
+    private float warningDist;
+    private float dangerDist;
+
+    private float bestWarningDist = 25f;
+    private float bestDangerDist = 12f;
+    private float worstDangerDist = 15f;
+    private float worstWarningDist = 7f;
 
 	// Use this for initialization
 	void Start () {
         lightContainer = transform.Find("Lights");
         allLights = lightContainer.GetComponentsInChildren<Light>();
+
+        SetAlertStatus(true);
     }
 
     // Update is called once per frame
@@ -59,5 +66,19 @@ public class CompanionAlert : MonoBehaviour {
 
         prevColor = lightColors[state];
         state = s;
+    }
+
+    public void SetAlertStatus(bool happy)
+    {
+        if (happy)
+        {
+            warningDist = bestWarningDist;
+            dangerDist = bestDangerDist;
+        }
+        else
+        {
+            warningDist = worstWarningDist;
+            dangerDist = worstDangerDist;
+        }
     }
 }
