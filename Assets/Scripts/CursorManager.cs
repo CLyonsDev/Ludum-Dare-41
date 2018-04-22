@@ -10,11 +10,12 @@ public class CursorManager : MonoBehaviour {
         c_default,
         c_collect,
         c_oil,
-        c_oil_depleted
+        c_oil_depleted,
+        c_door
     };
 
 
-    public Sprite defaultCursorImage, collectCursorImage, oilCursorImage, oilDepetedCursorImage;
+    public Sprite defaultCursorImage, collectCursorImage, oilCursorImage, oilDepetedCursorImage, doorImage;
     public CursorStates currentState;
 
     private Image playerCrosshair;
@@ -61,6 +62,9 @@ public class CursorManager : MonoBehaviour {
                     break;
                 case CursorStates.c_oil_depleted:
                     playerCrosshair.sprite = oilDepetedCursorImage;
+                    break;
+                case CursorStates.c_door:
+                    playerCrosshair.sprite = doorImage;
                     break;
             }
         }

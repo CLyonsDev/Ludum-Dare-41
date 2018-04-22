@@ -8,6 +8,7 @@ public class VisibilityLogic : MonoBehaviour
     public GameObject placeholder;
 
     private Transform playerTransform;
+    private Transform safetySpawnPoint;
     private FlashlightLogic flashlight;
     private MonsterHealth healthScript;
     private MonsterMovement moveScript;
@@ -16,13 +17,14 @@ public class VisibilityLogic : MonoBehaviour
     public bool isBurned = false;   // Are we being burned?
     private bool wasBurned = false;
 
-    private float minRelocationDist = 30f;
+    private float minRelocationDist = 15f;
     private float maxRelocationDist = 50f;
 
     // Use this for initialization
     void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        safetySpawnPoint = GameObject.FindGameObjectWithTag("MonsterSafetySpawn").transform;
         flashlight = playerTransform.GetComponentInChildren<FlashlightLogic>();
         healthScript = GetComponent<MonsterHealth>();
     }
@@ -56,49 +58,70 @@ public class VisibilityLogic : MonoBehaviour
             healthScript.StopDamage();
             Reposition(false);
         }
+
+        //TODO: Remove this
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Reposition(true);
+            StartCoroutine(Reposition(true));
+        }
     }
 
-    public void Reposition(bool overrideTests)
+    public IEnumerator Reposition(bool overrideTests)
     {
         if((isSeen && wasBurned) || overrideTests)
         {
-            // Debug.Log("Reposition(). Override: " + overrideTests);
-            isSeen = false;
-            wasBurned = false;
-
             bool b = false;
+            int loops = 0;
+            int maxLoops = 100;
             while (!b)
             {
-                Vector3 pos = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)) * Random.Range(minRelocationDist, maxRelocationDist);
-                pos += playerTransform.position;
+                Vector2 circle = Random.insideUnitCircle * maxRelocationDist;
+                Vector3 pos = new Vector3(circle.x, 0, circle.y);
+                GameObject g = (GameObject)Instantiate(placeholder, pos, Quaternion.identity);
 
-                if (Vector3.Distance(pos, playerTransform.position) >= minRelocationDist)
+                if(Vector3.Distance(g.transform.position, playerTransform.position) <= minRelocationDist)
                 {
-                    Vector3 point = Camera.main.WorldToViewportPoint(pos);
-                    bool isOnScreen = (point.z > 0 && point.x > 0 && point.x < 1 && point.y > 0 && point.y < 1);
-                    if (true) //!isOnScreen
+                    Destroy(g);
+                }
+                else
+                {
+                    yield return 0;
+                    if (g.GetComponent<Renderer>().isVisible)
                     {
-                        //Ray r = new Ray(new Vector3(pos.x, pos.y + 1f, pos.z), Vector3.down);
-                        if (Physics.Raycast(new Vector3(pos.x, pos.y + 1f, pos.z), Vector3.down, Mathf.Infinity))
+                        Destroy(g);
+                    }
+                    else
+                    {
+                        Ray r = new Ray(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100);
+                        Debug.DrawRay(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100, Color.red, 25f);
+                        if (Physics.Raycast(r))
                         {
-                            GameObject g = (GameObject)Instantiate(placeholder, pos, Quaternion.identity);
-                            if (!g.GetComponent<Renderer>().isVisible)
-                            {
-                                if(Vector3.Distance(g.transform.position, playerTransform.position) >= minRelocationDist)
-                                {
-                                    // Debug.LogWarning(pos);
-                                    transform.position = pos;
-                                    b = true;
-                                    GameObject.Destroy(g);
-                                    break;
-                                    // Debug.Log(Vector3.Distance(pos, playerTransform.position));
-                                }
-                            }
-                            GameObject.Destroy(g);
+                            Debug.Log("Location Found.");
+                            this.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(pos);
+                            Destroy(g);
+                            break;
+                        }
+                        else
+                        {
+                            Destroy(g);
                         }
                     }
                 }
+
+                loops++;
+
+                if(loops >= maxLoops)
+                {
+                    Debug.LogError("Error. No suitable locations found. Aborting...");
+                    this.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(safetySpawnPoint.position);
+                    break;
+                }
             }
+
+            // Debug.Log("Reposition(). Override: " + overrideTests);
+            isSeen = false;
+            wasBurned = false;
         }
     }
 

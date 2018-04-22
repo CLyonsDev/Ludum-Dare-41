@@ -11,6 +11,7 @@ public class MonsterMovement : MonoBehaviour {
     private MonsterHealth healthScript;
 
     private bool canMove = true;
+    public bool moveEnabled = true;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,9 @@ public class MonsterMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!moveEnabled)
+            return;
+
         canMove = !vis.isBurned;
 
         MovementLogic();

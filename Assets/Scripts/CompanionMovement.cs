@@ -26,7 +26,8 @@ public class CompanionMovement : MonoBehaviour {
         stopDist = agent.stoppingDistance;
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        ballTransform = GameObject.FindGameObjectWithTag("Ball").transform;
+        ballTransform = playerTransform.GetComponent<EquipmentManager>().equipment[1].transform;
+        //ballTransform = GameObject.FindGameObjectWithTag("Ball").transform;
         // ballTransform.gameObject.SetActive(false);
         agent.SetDestination(playerTransform.position);
 	}

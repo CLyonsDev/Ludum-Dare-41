@@ -6,12 +6,14 @@ public class CollectItem : MonoBehaviour {
 
     public LayerMask collectionLM;
     public LayerMask companionLM;
+    public LayerMask doorLM;
 
     private Transform player;
 
     public float collectDist = 0.5f;
     public bool lookingAtItem = false;
     public bool lookingAtCompanion = false;
+    public bool lookingAtDoor = false;
 
     public static CollectItem _Instance;
 
@@ -54,7 +56,7 @@ public class CollectItem : MonoBehaviour {
                         break;
                 }
             }
-        }else if (lookingAtItem && !lookingAtCompanion)
+        }else if (lookingAtItem && !lookingAtCompanion && !lookingAtDoor)
         {
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
             lookingAtItem = false;
@@ -79,10 +81,28 @@ public class CollectItem : MonoBehaviour {
                 CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_oil_depleted);
             }
         }
-        else if (lookingAtCompanion && !lookingAtItem)
+        else if (lookingAtCompanion && !lookingAtItem && !lookingAtDoor)
         {
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
             lookingAtCompanion = false;
+        }
+
+        if(Physics.Raycast(ray, out hit, collectDist, doorLM))
+        {
+            CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_door);
+            lookingAtDoor = true;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Animator anim = hit.transform.root.GetComponent<Animator>();
+                bool b = anim.GetBool("isOpen");
+                anim.SetBool("isOpen", !b);
+                anim.SetTrigger("interact");
+            }
+        }
+        else if (!lookingAtCompanion && !lookingAtItem && lookingAtDoor)
+        {
+            CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
+            lookingAtDoor = false;
         }
     }
 }

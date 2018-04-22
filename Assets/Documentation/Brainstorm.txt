@@ -1,0 +1,102 @@
+THEME: Combine two incompatable genres.
+
+-> Stealth game & Rhythm game
+-> Horror game & Rhythm game
+
+-> Shooter & Escape the Room
+
+
+Stealth Rhythm Game
+====================
+Play as a thief
+Top Down
+Need to complete various assignments
+	- Steal something
+	- Assassinate someone
+All movement happens on the beat
+	- Crypt of the necrodancer-y
+
+Grand Strategy FPS
+====================
+Very small grand strategy map
+
+Shooter & Escape the Room
+====================
+First Person
+Every room you complete unfolds the room to reveal a new room
+At first it is just puzzles
+	- After a couple of puzzles you open up a chest to reveal a shotgun
+	- Shotgun breaks down door to reveal you are in larger room
+	- Need to find way to escape while also defeating enemies
+
+Simulation & Horror
+===================
+First Person
+Farming Simulator
+Day&Night
+	- During daytime you plant crops
+	- Night time you get thrown into randomly generated horror scenarios
+		- Wandering through cornfield with monster chasing you?
+
+
+Basketball & Shoot-em-up
+====================
+Doom-ish game where your weapon is a basketball
+Throw at enemies & must catch it when it bounces back
+
+
+Virtual Pet & Horror
+====================
+Pet follows you around [X]
+	-Acts as a monster detector
+		- Think of the Aliens detector [X]
+		- Changes color of light when monster is close [X]
+		- Growls when monster is somewhat close
+		- "Barks" when monster is very close
+Pet has needs that must be met [X]
+	- Food & Drink (Batteries & Oil)
+	- Play (Ball) [X]
+	- Rest (Recharge)
+
+---- Inventory ------
+-> Batteries stored and instantly refil when LMB held down and battery drained
+
+Penalties for not fufilling needs:
+- Food & Drink -> Lower Speed [X]
+- Happiness -> Lower Detection Range [X]
+- Rest -> Cannot Move & Light Dimmed [X]
+
+Player is able to bring up tablet with pet stats on it so they know what to do [X]
+
+Recharge pads allow pet to rest
+	- Emit dim light that repels monster
+
+Player has flashlight
+	- Batteries drain rapidly as it is used [X]
+	- Batteries recharge slowly over time [X]
+		- Can also be replaced by a pickup [X]
+Monster starts in random location certain distance from player [-]
+Monster cannot move if flashlight is on it [X]
+If monster is seen with flashlight and then player leaves view, monster has 50% chance to teleport to a new place in a min/max AOE around the player [X]
+
+------ EXTRAS ----------
+If we have time, here are things that would be cool:
+- Interacting with companion (petting, etc)
+- Can pet companion.
+	- Long cutscene. Non-interruptible
+- If happiness gets low, companion can wander.
+- Companion Idle Behaviour (wandering in small aoe)
+- Opening Cutscene
+- Fun little ingame audio cutscene clips
+- Makes cat noises?
+
+STORY:
+Moonlight Maximum prequel
+Lunar base setting
+Base is invaded by aliens and they cut power to the station
+Monster is released
+Player needs to find a way from their office to evacuation shuttle
+
+Player has AI pet that is a prototype
+	Must satisfy its needs or it will turn off until they are met
+

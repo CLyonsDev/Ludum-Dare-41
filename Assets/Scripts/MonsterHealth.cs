@@ -59,11 +59,17 @@ public class MonsterHealth : MonoBehaviour {
 
     private IEnumerator Respawn()
     {
+        if(visLogic == null)
+        {
+            Debug.LogError("Error. VisLogic.cs not found. Aborting.");
+            yield return null;
+        }
+
         isDead = true;
         Debug.Log("MONSTER DOWN!");
         yield return new WaitForSeconds(1);
         // Debug.Log("Respawning");
-        visLogic.Reposition(false);
+        StartCoroutine(visLogic.Reposition(false));
         isDead = false;
         currentHealth = maxHealth;
     }

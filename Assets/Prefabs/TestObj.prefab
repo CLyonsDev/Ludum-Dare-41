@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33848283713899136}
   - component: {fileID: 65458623780056338}
   - component: {fileID: 23138170542947674}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: TestObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7e254eb1d38906a489e6fabb53450499, type: 2}
+  - {fileID: 2100000, guid: ca59ebfc113c16c4fa49541f7a46d295, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

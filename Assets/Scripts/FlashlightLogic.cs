@@ -21,7 +21,7 @@ public class FlashlightLogic : MonoBehaviour
     [SerializeField]
     private float currentBattery;
     private float batteryDrainAmt = 35f;
-    private float batteryRechargeAmt = 1f;
+    private float batteryRechargeAmt = 5f;
     private float batteryDrainRate = 1f;
     private float batteryActivationThreshold = 20f;
 

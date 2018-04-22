@@ -1,0 +1,135 @@
+/// Do as many takes of each line as you want- it does not have to all be one file. Please just make sure to label them so I know what's what!
+/// Submit some serious, and some where you're completely hamming it up!
+/// If you don't have software to record your voice use Audacity: https://www.audacityteam.org/
+/// Send me your audio clips in .WAV format please!
+/// Depending on time constraints not all of these will make it in, but I'm going to do my best to make sure everyone that submits gets at least one line in.
+/// HAVE FUN WITH THEEEEEEEEESSSSEEEEE! This is going to end up cheesy & goofy as hell and it will be great. ///
+
+CAST:
+Scientist 1 - Harrison
+Scientist 2 - Tony
+MAX DAMAGE - Kent
+Companion - RENNY BABBBBYYYYYYYYYYYYYY
+Soldier 1 - Ryan M.
+
+Generic Sounds- EVERYONE!
+Ghost - Athena & EVERYONE!
+
+SETTING:
+Horror Game that takes place on a lunar base. The power is cut and a terrifying monster is set free.
+Monster then does what monsters always do in these sorts of situations and attacks the base.
+
+IMPORTANT - NAMING YOUR FILES:
+
+/// PLEASE LABEL VOICE FILES AS FOLLOWS (Omit fields if necessary)
+/// Section_YourName_RoleName_Line##_Take##.WAV
+/// ex: Intro_Harrison_Sci1_00_03.WAV
+/// ex: GenericSounds_Tony_ScaredScream_01_05.WAV
+
+
+(CAST: Harrison & Tony)
+Intro-
+- Two Scientists Conversing in Lab -
+00 Scientist 1: That's 187 over 95
+01 Scientist 2: 187 over 95, got it.
+ *Faint Explosion, Rumbling Noise*
+02 Scientist 2: Hey... What was that?
+ *Lights Cut Out*
+03 Scientist 1: I don't- Woah what happened to the lights?
+04 Scientist 2: Do you hear that?
+05 Scientist 1: Oh no... That means...
+06 Scientist 2: BEHIND YOU!
+07 Scientist 1: *Death Scream*
+08 Scientist 2: OH GOD! NO! NO! NOOOOOOOOOOOOOOOOOOOOOOO!
+09 Scientist 2: *Death Scream*
+
+
+(CAST: Kent)
+Easter Egg-
+- MAX DAMAGE shooting into a horde of aliens -
+00 *Battle Roar*
+01 "COME GET SOME!"
+02 *Maniacal Laughter*
+
+- Other MAX DAMAGE Lines -
+03 "AHA! TOO SLOW!"
+04 "YOU'LL HAVE TO DO BETTER THAN THAT!"
+05 "OOOH! THAT'S GOTTA HURT!"
+06 "THAT LIMB IS *MINE* NOW!"
+07+ *More Laughter*  -- Give me a few good takes for this one
+
+
+(CAST: EVERYONE!)
+Generic Sounds-
+00 *Death Scream* -- Please make sure these files are labeled in a way that I know they are part of the Generic Sounds.
+01 *Scared Scream* -- Please make sure these files are labeled in a way that I know they are part of the Generic Sounds.
+02 *Anything you want to say (or yell)* -- Please make sure these files are labeled in a way that I know they are part of the Generic Sounds.
+
+(CAST: RENNNNNYYY BBBAAABABABBABABYYYYYY)
+Companion Sounds-
+*We may not end up using voicelines for the companion, but I would rather have them and not need them than vice versa*
+- Say in monotone, roboty voice -
+00 "Hello. I am D-O-G version 0.6. I will be accompanying you today."
+01 "Alert."  -- Give me a few takes for this one.
+02 "Alert. Hostile Nearby."
+03 "Danger."  -- Give me a few takes for this one.
+04 "Danger. Hostile in Immediate Vicinity."
+05 "Warning."  -- Give me a few takes for this one.
+06 "Bork. Bork. Bork."
+07 "Bark... Bark... Bark..."
+08 "Grrrr."
+09 "Fun Levels Critically Low."
+10 "Energy... Depleating..."
+11 "Energy Depelted... Deactivating All Non-Essential Systems to Recharge..."
+12 "I Require Sustinence."
+13 "I am Having Fun."
+14 "This is Fun."
+15 "That Hit The Spot."
+16 "Thank You."
+17 "Charging."
+18 "Charge Complete."
+19 "All Systems Optimal."
+20 "Powering Down."
+21 "Okay."
+22 "Good."
+23 "Key Required."
+24 "Assessment Completed. You Require a Key."
+25 "Assessment Completed. That Door Will Not Open."
+
+(CAST: Athena & EVERYONE!)
+Ghost VoiceLines (Will be heavily filtered & spliced)-
+- Say these as if you are a spooky ghost -
+00 "OoOoOoO I am a Spooky Ghost"
+01 "OoOoOoOoOoOoOo"
+02 "Ree"
+03 "Reeeeeeee"
+04 "Boo"
+05 "Finally I am Free"
+06 "I have escaped my prison."
+07 "Oh-Woah"
+08 *Short Laugh*
+09 *Long Laugh*
+10 *Shout*
+11 *Long Shout*
+12 *Soft Whisper -- Incomprehensible*
+13 *Soft Whisper -- Anything you want to say*
+14 *Angry Whisper -- Anything you want to say*
+
+
+(Cast: Ryan M.)
+Soldier 1 VoiceLines-
+- Communicating over radio -
+- Slightly shaken. Obviously in a rush -
+00 "Hey... Can you hear me? No don't bother responding- there isn't time."
+01 "Listen. Aliens attacked the base and are making a beeline for the generator."
+02 "We sent our best soldier in, but I don't think it's going to be enough."
+03 "We're leaving in three minutes. Make it to us or we will leave without you."
+04 "Out."
+05 "COME ON, I CAN SEE YOU FROM HERE!"
+06 "RUN!"
+07 "COME ON!"
+08 "HURRY!"
+09 "MOVE IT!"
+10 "You're lucky that you made it when you did. We were just about to leave you behind."
+- In Horrified Awe -
+11 "What the hell is that thing..."

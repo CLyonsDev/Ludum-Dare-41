@@ -9,6 +9,7 @@ TagManager:
   - Pickup
   - ResourceTextContainer
   - Crosshair
+  - MonsterSafetySpawn
   layers:
   - Default
   - TransparentFX
@@ -23,10 +24,10 @@ TagManager:
   - Ball
   - Monster
   - Collectable
-  - 
-  - 
-  - 
-  - 
+  - Door
+  - No_Render
+  - Recharge Station
+  - Processing Volume
   - 
   - 
   - 
