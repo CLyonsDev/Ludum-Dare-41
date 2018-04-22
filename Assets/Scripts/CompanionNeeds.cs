@@ -7,19 +7,23 @@ public class CompanionNeeds : MonoBehaviour {
     private int maxFood = 100;
     [SerializeField]
     private float currentFood;
-    private float foodLossPerTick = 0.1f;
+    private float foodLossPerTick = 0.1f; // 0.1f
 
     private int maxHappiness = 100;
     [SerializeField]
     private float currentHappiness;
-    private float happinessLossPerTick = 1;
+    private float happinessLossPerTick = 1.5f; // 1.5f
 
     private int maxEnergy = 100;
     [SerializeField]
     private float currentEnergy;
-    private float energyLossPerTick = 0.1f; // 0.1f
+    private float energyLossPerTick = 0.5f; // 0.5f
     private int energyRechargeRate = 1;
-    private float reactivateThreshold = 25f;
+    private float reactivateThreshold = 40f;
+
+    private float alertPercent = 0.25f;
+
+    private bool alertFood = false, alertEnergy = false, alertHappy = false, alertRecharge = false;
 
     [SerializeField]
     public bool isResting = false;
@@ -27,6 +31,7 @@ public class CompanionNeeds : MonoBehaviour {
     private float tickRate = 0.5f;
 
     public static CompanionNeeds _Instance;
+    CompanionSoundManager soundManager;
 
     private void Awake()
     {
@@ -42,6 +47,8 @@ public class CompanionNeeds : MonoBehaviour {
         currentHappiness = maxHappiness;
         currentEnergy = maxEnergy;
 
+        soundManager = GetComponent<CompanionSoundManager>();
+
         StartCoroutine(Tick());
     }
 
@@ -55,13 +62,48 @@ public class CompanionNeeds : MonoBehaviour {
                 currentFood -= foodLossPerTick;
                 currentHappiness -= happinessLossPerTick;
                 currentEnergy -= energyLossPerTick;
+                CheckThresholds();
                 CheckStats();
             }
         }
     }
 
+    private void CheckThresholds()
+    {
+        float food = currentFood / maxFood;
+        float energy = currentEnergy / maxEnergy;
+        float happy = currentHappiness / maxHappiness;
+
+        if (food <= alertPercent && !alertFood)
+        {
+            soundManager.PlaySound(soundManager.lowFood);
+            alertFood = true;
+        }else if (energy <= alertPercent && !alertEnergy)
+        {
+            soundManager.PlaySound(soundManager.lowEnergy);
+            alertEnergy = true;
+        }else if (happy <= alertPercent && !alertHappy)
+        {
+            soundManager.PlaySound(soundManager.lowFun);
+            alertHappy = true;
+        }
+        else
+        {
+            if (alertFood && food > alertPercent)
+                alertFood = false;
+            if (alertEnergy && energy > alertPercent)
+                alertEnergy = false;
+            if (alertHappy && happy > alertPercent)
+                alertHappy = false;
+        }
+    }
+
     private IEnumerator Recharge()
     {
+        if(!alertRecharge)
+            soundManager.PlaySound(soundManager.recharge);
+
+        alertRecharge = true;
         isResting = true;
         CompanionState._Instance.SetState(CompanionState.CompanionStateList.idle);
         Light[] lights = GetComponent<CompanionAlert>().allLights;
@@ -81,6 +123,8 @@ public class CompanionNeeds : MonoBehaviour {
             l.intensity = 1f;
         }
         isResting = false;
+        alertEnergy = false;
+        alertRecharge = false;
     }
 
     private void CheckStats()

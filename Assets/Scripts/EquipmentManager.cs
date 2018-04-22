@@ -29,7 +29,12 @@ public class EquipmentManager : MonoBehaviour {
             if (i == index)
                 equipment[i].SetActive(true);
             else
-                equipment[i].SetActive(false);
+            {
+                if (i != 1)
+                    equipment[i].SetActive(false);
+                else
+                    equipment[i].GetComponent<ThrowBall>().DeactivateBall();
+            }
         }
     }
 }

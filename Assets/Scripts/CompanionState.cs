@@ -31,8 +31,25 @@ public class CompanionState : MonoBehaviour {
 	
     public void SetState(CompanionStateList newState)
     {
-        currentState = newState;
-        GetComponent<CompanionMovement>().reachedDest = false;
-        Debug.Log("Switching state to " + newState);
+        if(currentState != CompanionStateList.idle || newState == CompanionStateList.following)
+        {
+            currentState = newState;
+            GetComponent<CompanionMovement>().reachedDest = false;
+            Debug.Log("Switching state to " + newState);
+        }
+        else
+        {
+            Debug.Log("Currently idle. Cannot change states to " + newState);
+        }
+    }
+
+    public void Deactivate()
+    {
+        SetState(CompanionStateList.idle);
+    }
+
+    public void Activate()
+    {
+        SetState(CompanionStateList.following);
     }
 }

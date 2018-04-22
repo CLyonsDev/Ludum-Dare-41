@@ -12,6 +12,7 @@ public class ThrowBall : MonoBehaviour {
     public bool isGrabbable = false;
     private Rigidbody rb;
     private Transform hand;
+    CompanionSoundManager soundManager;
 
     private bool shouldSwitch = false;
     public bool canSwitch = true;
@@ -21,7 +22,9 @@ public class ThrowBall : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         hand = transform.parent;
-	}
+        soundManager = CompanionSoundManager._Instance;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -30,6 +33,7 @@ public class ThrowBall : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1") && !isThrown && !CollectItem._Instance.lookingAtItem)
         {
+            soundManager.PlaySound(soundManager.fetch);
             travelTime = 0.0f;
             isThrown = true;
             transform.SetParent(null);  // Become Batman
@@ -80,12 +84,22 @@ public class ThrowBall : MonoBehaviour {
         }
     }
 
+    public void DeactivateBall()
+    {
+        shouldSwitch = true;
+        if (canSwitch)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+
     public void ReturnBall()
     {
         Debug.LogWarning(travelTime * distMod);
 
         CompanionNeeds._Instance.AddHappy(travelTime * distMod);
         CompanionState._Instance.currentState = CompanionState.CompanionStateList.following;
+        soundManager.PlaySound(soundManager.fetch);
 
         isGrabbable = false;
         isThrown = false;
@@ -93,10 +107,10 @@ public class ThrowBall : MonoBehaviour {
         transform.localPosition = Vector3.zero;
         rb.isKinematic = true;
 
-        //canSwitch = true;
-        //if (shouldSwitch)
-        //{
-        //    this.gameObject.SetActive(false);
-        //}
+        canSwitch = true;
+        if (shouldSwitch)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

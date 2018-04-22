@@ -17,7 +17,7 @@ public class VisibilityLogic : MonoBehaviour
     public bool isBurned = false;   // Are we being burned?
     private bool wasBurned = false;
 
-    private float minRelocationDist = 15f;
+    private float minRelocationDist = 25f;
     private float maxRelocationDist = 50f;
 
     // Use this for initialization
@@ -77,7 +77,7 @@ public class VisibilityLogic : MonoBehaviour
             while (!b)
             {
                 Vector2 circle = Random.insideUnitCircle * maxRelocationDist;
-                Vector3 pos = new Vector3(circle.x, 0, circle.y);
+                Vector3 pos = new Vector3(circle.x, Random.Range(-20, 20), circle.y);
                 GameObject g = (GameObject)Instantiate(placeholder, pos, Quaternion.identity);
 
                 if(Vector3.Distance(g.transform.position, playerTransform.position) <= minRelocationDist)
@@ -94,10 +94,12 @@ public class VisibilityLogic : MonoBehaviour
                     else
                     {
                         Ray r = new Ray(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100);
+                        RaycastHit hit;
                         Debug.DrawRay(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100, Color.red, 25f);
-                        if (Physics.Raycast(r))
+                        if (Physics.Raycast(r, out hit))
                         {
                             Debug.Log("Location Found.");
+                            pos.y = hit.point.y;
                             this.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(pos);
                             Destroy(g);
                             break;
@@ -124,63 +126,4 @@ public class VisibilityLogic : MonoBehaviour
             wasBurned = false;
         }
     }
-
-    /*public void Reposition(bool overrideTests)
-    {
-        if ((isSeen && wasBurned) || overrideTests)
-        {
-            Debug.Log("Reposition(). Override: " + overrideTests);
-            // bool b = false;
-            while (true)
-            {
-                // We to pick a point that is further away than min, but closer than max
-                // Random.InsideUnitCircle is from 0-1 with 0.5 being the center.
-                // Vector3 pos = new Vector3(Random.Range(-maxRelocationDist, maxRelocationDist), 0 , Random.Range(-maxRelocationDist, maxRelocationDist));
-                float range = Random.Range(minRelocationDist, maxRelocationDist);
-                float angle = Random.Range(0.0f, Mathf.PI * 2);
-                Vector3 pos = new Vector3(Mathf.Sign(angle), 0, Mathf.Cos(angle));
-                pos *= range;
-                pos += player.transform.position;
-
-                if (overrideTests)
-                    Debug.Log(pos);
-
-                Ray r = new Ray(new Vector3(pos.x, pos.y + 1f, pos.z), Vector3.down);
-                if (Physics.Raycast(r))
-                {
-                    if (overrideTests)
-                        Debug.Log("Passes raytest");
-
-                    Vector3 prevPos = transform.position;
-                    //transform.position = pos;
-                    /*if (GetComponentInChildren<Renderer>().isVisible && !overrideTests)
-                    {
-                        if (overrideTests)
-                            Debug.Log("Bad Position.");
-
-                        transform.position = prevPos;
-                    }*/
-                    /*Vector3 viewAngle = Camera.main.WorldToViewportPoint(transform.position);
-                    if (viewAngle.x > -0.3f)
-                    {
-                        Debug.Log("Bad Position.");
-                    }
-                    else
-                    {
-                        Debug.Log("Good Position! " + pos);
-                        Debug.Log(viewAngle);
-                        isSeen = false;
-                        isBurned = false;
-                        wasBurned = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Debug.Log("End");
-        isSeen = false;
-        isBurned = false;
-        wasBurned = false;
-    }*/
 }

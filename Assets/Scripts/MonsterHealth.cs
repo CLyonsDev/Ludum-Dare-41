@@ -7,6 +7,7 @@ public class MonsterHealth : MonoBehaviour {
     private VisibilityLogic visLogic;
 
     public float maxHealth = 100;
+    private float respawnTime = 20f;
     public float currentHealth;
     private bool takingDamage = false;
     public bool isDead = false;
@@ -70,6 +71,9 @@ public class MonsterHealth : MonoBehaviour {
         yield return new WaitForSeconds(1);
         // Debug.Log("Respawning");
         StartCoroutine(visLogic.Reposition(false));
+
+        yield return new WaitForSeconds(respawnTime);
+
         isDead = false;
         currentHealth = maxHealth;
     }

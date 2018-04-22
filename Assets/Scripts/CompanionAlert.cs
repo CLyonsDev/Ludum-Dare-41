@@ -10,6 +10,7 @@ public class CompanionAlert : MonoBehaviour {
     public Light[] allLights;
 
     private RotateOverTime dogLight;
+    private CompanionSoundManager soundManager;
 
     [SerializeField]
     private Color[] lightColors;
@@ -29,6 +30,7 @@ public class CompanionAlert : MonoBehaviour {
 	void Start () {
         allLights = GetComponentsInChildren<Light>();
         dogLight = GetComponentInChildren<RotateOverTime>();
+        soundManager = CompanionSoundManager._Instance;
 
         SetAlertStatus(true);
     }
@@ -41,17 +43,22 @@ public class CompanionAlert : MonoBehaviour {
         float dist = Vector3.Distance(transform.position, monsterTransform.position);
         // Debug.Log(dist);
 
-        if(dist <= warningDist && dist > dangerDist)
+        // Warning!
+        if(dist <= warningDist && dist > dangerDist && state != 1)
         {
             ChangeLights(1);
             dogLight.SetRotSpeed(1);
-        }else if(dist <= dangerDist)
+            soundManager.PlaySound(soundManager.warningSounds);
+        }else if(dist <= dangerDist && state != 2)
         {
+            // DANGER!!
             ChangeLights(2);
             dogLight.SetRotSpeed(2);
+            soundManager.PlaySound(soundManager.dangerSounds);
         }
-        else
+        else if(dist > warningDist && state != 0)
         {
+            // Safe.
             ChangeLights(0);
             dogLight.SetRotSpeed(0);
         }
@@ -69,6 +76,8 @@ public class CompanionAlert : MonoBehaviour {
         // Debug.Log("Chaning Lights");
         if (state == s)
             return;
+
+        Debug.Log("Changing State to " + s);
 
         prevColor = lightColors[state];
         state = s;

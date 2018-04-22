@@ -78,8 +78,8 @@ Companion Sounds-
 06 "Bork. Bork. Bork."
 07 "Bark... Bark... Bark..."
 08 "Grrrr."
-09 "Fun Levels Critically Low."
-10 "Energy... Depleating..."
+09 "Fun Levels Critically Low." <<<<- Redo
+10 "Energy... Depleating..." <<<<- Redo
 11 "Energy Depelted... Deactivating All Non-Essential Systems to Recharge..."
 12 "I Require Sustinence."
 13 "I am Having Fun."

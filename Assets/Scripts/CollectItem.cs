@@ -15,6 +15,8 @@ public class CollectItem : MonoBehaviour {
     public bool lookingAtCompanion = false;
     public bool lookingAtDoor = false;
 
+    private CompanionSoundManager soundManager;
+
     public static CollectItem _Instance;
 
     private void Awake()
@@ -27,6 +29,7 @@ public class CollectItem : MonoBehaviour {
     // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        soundManager = CompanionSoundManager._Instance;
 	}
 	
 	// Update is called once per frame
@@ -72,8 +75,9 @@ public class CollectItem : MonoBehaviour {
                 if (Input.GetButton("Fire1"))
                 {
                     Debug.Log("Refilling Companion");
-                    hit.transform.root.GetComponent<CompanionNeeds>().AddEnergy(75);
+                    hit.transform.root.GetComponent<CompanionNeeds>().AddEnergy(100);
                     PlayerInventory._Instance.RemoveItem(Pickup.PickupTypeList.Oil);
+                    soundManager.PlaySound(soundManager.giveFood);
                 }
             }
             else
