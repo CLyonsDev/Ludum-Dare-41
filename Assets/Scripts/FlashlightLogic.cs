@@ -9,9 +9,11 @@ public class FlashlightLogic : MonoBehaviour
     private Light flashlightLight; // Nice name
     public LayerMask flashlightLM;
 
-    private float defaultIntensity = 1;
+    private float defaultIntensity = 0;
     private float enhancedIntensity = 3;
     private float lightLerpRate = 5;
+
+    private float flashlightRange = 10f;
 
     [HideInInspector]
     public bool lightEnhanced = false;
@@ -36,13 +38,14 @@ public class FlashlightLogic : MonoBehaviour
     {
         currentBattery = maxBattery;
         flashlightLight = transform.GetComponentInChildren<Light>();
+        flashlightLight.intensity = defaultIntensity;
         flashlightChargeBar = transform.Find("FlashlightCanvas").Find("ChargeBar").GetComponent<Image>();    // *Sunglasses*
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && canEnhance && !CollectItem._Instance.lookingAtItem && !CollectItem._Instance.lookingAtCompanion)
+        if (Input.GetButtonDown("Fire1") && canEnhance && !CollectItem._Instance.lookingAtItem && !CollectItem._Instance.lookingAtCompanion && !CollectItem._Instance.lookingAtDoor && !CollectItem._Instance.lookingAtUnlocker && !CollectItem._Instance.lookingAtChargingStation)
         {
             lightEnhanced = true;
         }
@@ -68,7 +71,7 @@ public class FlashlightLogic : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, flashlightLM))
+        if(Physics.Raycast(ray, out hit, flashlightRange, flashlightLM))
         {
             // Looking at monster
             Debug.LogWarning("Looking at monster");

@@ -24,6 +24,7 @@ public class EquipmentManager : MonoBehaviour {
 
     private void SetEquipmentAsActive(int index)
     {
+        Debug.Log("SetEquipmentActive");
         for (int i = 0; i < equipment.Length; i++)
         {
             if (i == index)

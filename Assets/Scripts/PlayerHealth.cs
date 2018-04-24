@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour {
 
+    private bool isDead = false;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -18,7 +20,13 @@ public class PlayerHealth : MonoBehaviour {
     //TODO: Actually do something ""Scary"" when you die.
     public void Die()
     {
-        Debug.LogError("You died.");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if(!isDead)
+        {
+            isDead = true;
+            Debug.LogError("You died.");
+            CompanionNeeds._Instance.RevertNeeds();
+            PlayerInventory._Instance.RevertInventory();
+            LevelManager._Instance.Restart();
+        }
     }
 }

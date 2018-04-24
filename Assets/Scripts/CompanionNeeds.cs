@@ -1,24 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 
 public class CompanionNeeds : MonoBehaviour {
 
+    private float startingFood, startingHappy, startingEnergy;
+
+    public float defaultLightIntensity = 2f;
+
     private int maxFood = 100;
     [SerializeField]
-    private float currentFood;
+    private float currentFood = 100;
     private float foodLossPerTick = 0.1f; // 0.1f
 
     private int maxHappiness = 100;
     [SerializeField]
-    private float currentHappiness;
-    private float happinessLossPerTick = 1.5f; // 1.5f
+    private float currentHappiness = 100;
+    private float happinessLossPerTick = 0.3f; // 1.5f
 
     private int maxEnergy = 100;
     [SerializeField]
-    private float currentEnergy;
-    private float energyLossPerTick = 0.5f; // 0.5f
+    private float currentEnergy = 100;
+    private float energyLossPerTick = 0.2f; // 0.2f
     private int energyRechargeRate = 1;
+    private int energyRechargeRateFast = 2;
     private float reactivateThreshold = 40f;
 
     private float alertPercent = 0.25f;
@@ -30,40 +37,95 @@ public class CompanionNeeds : MonoBehaviour {
 
     private float tickRate = 0.5f;
 
-    public static CompanionNeeds _Instance;
-    CompanionSoundManager soundManager;
+    private CompanionSoundManager soundManager;
+    private GameObject warningUIContainer;
 
-    private void Awake()
+    private CompanionAlert alertScript;
+    private NavMeshAgent agent;
+    private CompanionMovement movement;
+
+    public static CompanionNeeds _Instance;
+
+    public void RevertNeeds()
+    {
+        currentEnergy = startingEnergy;
+        currentFood = startingFood;
+        currentHappiness = startingHappy;
+    }
+
+    private void OnEnable()
     {
         if (_Instance == null)
+        {
             _Instance = this;
+            transform.SetParent(null);
+            DontDestroyOnLoad(this.gameObject);
+        }
         else
-            Destroy(this);
+            Destroy(this.gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene s, LoadSceneMode m)
+    {
+        if (s.buildIndex == 0)
+        {
+            currentEnergy = maxEnergy;
+            currentFood = maxFood;
+            currentHappiness = maxHappiness;
+            return;
+        }
+
+
+        startingEnergy = currentEnergy;
+        startingFood = currentFood;
+        startingHappy = currentHappiness;
+
+        Debug.Log("Grabbing References");
+        warningUIContainer = GameObject.FindGameObjectWithTag("CompanionWarningContainer");
+        GameObject companion = GameObject.FindGameObjectWithTag("Companion");
+        soundManager = companion.gameObject.GetComponent<CompanionSoundManager>();
+        alertScript = companion.gameObject.GetComponent<CompanionAlert>();
+        movement = companion.gameObject.GetComponent<CompanionMovement>();
+        agent = companion.gameObject.GetComponent<NavMeshAgent>();
+        StartCoroutine(Tick());
     }
 
     // Use this for initialization
     void Start () {
-        currentFood = maxFood;
-        currentHappiness = maxHappiness;
-        currentEnergy = maxEnergy;
-
-        soundManager = GetComponent<CompanionSoundManager>();
-
-        StartCoroutine(Tick());
     }
 
     private IEnumerator Tick()
     {
         while (true)
         {
+            if (movement == null)
+                yield return 0;
+
             yield return new WaitForSeconds(tickRate);
-            if (!isResting)
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(movement.playerTransform.position, path);
+            if (!isResting && CompanionState._Instance.activated && path.status == NavMeshPathStatus.PathComplete)
             {
                 currentFood -= foodLossPerTick;
-                currentHappiness -= happinessLossPerTick;
-                currentEnergy -= energyLossPerTick;
+
+                if (CompanionState._Instance.currentState != CompanionState.CompanionStateList.fetching)
+                    currentHappiness -= happinessLossPerTick;
+                if (CompanionState._Instance.currentState != CompanionState.CompanionStateList.movingToRecharge)
+                    currentEnergy -= energyLossPerTick;
+
                 CheckThresholds();
                 CheckStats();
+            }
+            else
+            {
+                Debug.Log(string.Format("{0} {1} {2}", isResting, CompanionState._Instance.activated, path.status));
             }
         }
     }
@@ -78,49 +140,95 @@ public class CompanionNeeds : MonoBehaviour {
         {
             soundManager.PlaySound(soundManager.lowFood);
             alertFood = true;
+            warningUIContainer.transform.Find("Food Warning").gameObject.SetActive(true);
         }else if (energy <= alertPercent && !alertEnergy)
         {
             soundManager.PlaySound(soundManager.lowEnergy);
             alertEnergy = true;
-        }else if (happy <= alertPercent && !alertHappy)
+            warningUIContainer.transform.Find("Energy Warning").gameObject.SetActive(true);
+        }
+        else if (happy <= alertPercent && !alertHappy)
         {
             soundManager.PlaySound(soundManager.lowFun);
             alertHappy = true;
+            warningUIContainer.transform.Find("Happiness Warning").gameObject.SetActive(true);
         }
         else
         {
             if (alertFood && food > alertPercent)
+            {
+                warningUIContainer.transform.Find("Food Warning").gameObject.SetActive(false);
                 alertFood = false;
+            }
             if (alertEnergy && energy > alertPercent)
+            {
                 alertEnergy = false;
+                warningUIContainer.transform.Find("Energy Warning").gameObject.SetActive(false);
+            }
             if (alertHappy && happy > alertPercent)
+            {
                 alertHappy = false;
+                warningUIContainer.transform.Find("Happiness Warning").gameObject.SetActive(false);
+            }
         }
     }
 
-    private IEnumerator Recharge()
+    public void StartRecharge(bool fast, bool toFull)
     {
-        if(!alertRecharge)
-            soundManager.PlaySound(soundManager.recharge);
+        if (isResting)
+            return;
+
+        StartCoroutine(Recharge(fast, toFull));
+    }
+
+    private IEnumerator Recharge(bool fast, bool toFull)
+    {
+        if (!alertRecharge)
+        {
+            if (!toFull)
+                soundManager.PlaySound(soundManager.recharge);
+            else
+                soundManager.PlaySound(soundManager.rechargeAtPad);
+        }
 
         alertRecharge = true;
         isResting = true;
         CompanionState._Instance.SetState(CompanionState.CompanionStateList.idle);
-        Light[] lights = GetComponent<CompanionAlert>().allLights;
+        Light[] lights = CompanionState._Instance.gameObject.GetComponent<CompanionAlert>().allLights;
         foreach (Light l in lights)
         {
             l.intensity = 0.5f;
         }
-        GetComponent<CompanionMovement>().StopMoving();
-        while (currentEnergy < reactivateThreshold)
+        CompanionSoundManager._Instance.gameObject.GetComponent<CompanionMovement>().StopMoving();
+        if (!toFull)
         {
-            yield return new WaitForSeconds(0.2f);
-            currentEnergy = Mathf.Clamp(currentEnergy + energyRechargeRate, 0, maxEnergy);
+            while (currentEnergy < reactivateThreshold)
+            {
+                if (fast)
+                    yield return new WaitForSeconds(0.15f);
+                else
+                    yield return new WaitForSeconds(0.2f);
+
+                currentEnergy = Mathf.Clamp(currentEnergy + energyRechargeRate, 0, maxEnergy);
+            }
         }
+        else
+        {
+            while (currentEnergy < maxEnergy)
+            {
+                if(fast)
+                    yield return new WaitForSeconds(0.15f);
+                else
+                    yield return new WaitForSeconds(0.2f);
+
+                currentEnergy = Mathf.Clamp(currentEnergy + energyRechargeRateFast, 0, maxEnergy);
+            }
+        }
+        
         CompanionState._Instance.SetState(CompanionState.CompanionStateList.following);
         foreach (Light l in lights)
         {
-            l.intensity = 1f;
+            l.intensity = 1.5f;
         }
         isResting = false;
         alertEnergy = false;
@@ -132,27 +240,27 @@ public class CompanionNeeds : MonoBehaviour {
         if(currentEnergy <= 0)
         {
             Debug.LogError("Out of energy! Recharging...");
-            StartCoroutine(Recharge());
+            StartRecharge(false, false);
         }
 
         if(currentHappiness <= 0)
         {
             // Debug.LogError("Out of happiness! I am anger........");
-            GetComponent<CompanionAlert>().SetAlertStatus(false);
+            alertScript.SetAlertStatus(false);
         }
         else
         {
-            GetComponent<CompanionAlert>().SetAlertStatus(true);
+            alertScript.SetAlertStatus(true);
         }
 
         if(currentFood <= 0)
         {
             // I AM STARVINGGGGGG
-            GetComponent<CompanionMovement>().UpdateSpeed(false);
+            alertScript.gameObject.GetComponent<CompanionMovement>().UpdateSpeed(false);
         }
         else
         {
-            GetComponent<CompanionMovement>().UpdateSpeed(true);
+            alertScript.gameObject.GetComponent<CompanionMovement>().UpdateSpeed(true);
         }
     }
 

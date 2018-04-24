@@ -10,6 +10,7 @@ public class ThrowBall : MonoBehaviour {
     private float distMod = 7f;
     private bool isThrown = false;
     public bool isGrabbable = false;
+    public bool grabbedByCompanion = false;
     private Rigidbody rb;
     private Transform hand;
     CompanionSoundManager soundManager;
@@ -46,7 +47,7 @@ public class ThrowBall : MonoBehaviour {
             CompanionNeeds._Instance.AddHappy(10);
 
             //! DONT DO THIS EVER. OFFICIAL GAMEJAM WORKAROUND(tm)(c)
-            CompanionNeeds._Instance.transform.GetComponent<CompanionMovement>().reachedDest = false;
+            CompanionSoundManager._Instance.transform.GetComponent<CompanionMovement>().reachedDest = false;
 
             canSwitch = false;
         }
@@ -60,18 +61,17 @@ public class ThrowBall : MonoBehaviour {
         {
             // We have probably fallen out of the map.
             Debug.Log("Ball has fallen out of map!");
-            ReturnBall();
+            ReturnBall(false);
         }
 	}
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.transform.tag == "Player" && isThrown)
+        if(col.transform.tag == "Player" && isGrabbable && !grabbedByCompanion)
         {
-            ReturnBall();
+            ReturnBall(false);
         }else if(col.transform.tag == "Companion" && isThrown)
         {
-
         }
     }
 
@@ -86,31 +86,37 @@ public class ThrowBall : MonoBehaviour {
 
     public void DeactivateBall()
     {
+        Debug.Log("Deactivate Ball");
         shouldSwitch = true;
         if (canSwitch)
         {
             this.gameObject.SetActive(false);
+            shouldSwitch = false;
         }
     }
 
-    public void ReturnBall()
+    public void ReturnBall(bool grabbedByCompanion)
     {
-        Debug.LogWarning(travelTime * distMod);
-
-        CompanionNeeds._Instance.AddHappy(travelTime * distMod);
-        CompanionState._Instance.currentState = CompanionState.CompanionStateList.following;
-        soundManager.PlaySound(soundManager.fetch);
+        if (grabbedByCompanion) {
+            Debug.LogWarning(travelTime * distMod);
+            CompanionNeeds._Instance.AddHappy(travelTime * distMod);
+            soundManager.PlaySound(soundManager.fetch);
+            CompanionState._Instance.currentState = CompanionState.CompanionStateList.following;
+        }
 
         isGrabbable = false;
         isThrown = false;
         transform.SetParent(hand);
         transform.localPosition = Vector3.zero;
         rb.isKinematic = true;
+        grabbedByCompanion = false;
 
         canSwitch = true;
         if (shouldSwitch)
         {
+            Debug.Log("ShouldSwitch");
             this.gameObject.SetActive(false);
+            shouldSwitch = false;
         }
     }
 }

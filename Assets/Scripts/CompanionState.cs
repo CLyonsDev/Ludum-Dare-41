@@ -9,8 +9,11 @@ public class CompanionState : MonoBehaviour {
         idle,
         following,
         fetching,
-        alert
+        alert,
+        movingToRecharge
     };
+
+    public bool activated = true;
 
     public CompanionStateList currentState;
 
@@ -26,7 +29,8 @@ public class CompanionState : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        SetState(CompanionStateList.following);
+        if(activated)
+            SetState(CompanionStateList.following);
 	}
 	
     public void SetState(CompanionStateList newState)

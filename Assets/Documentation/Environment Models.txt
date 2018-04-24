@@ -1,29 +1,29 @@
 Environmental Models
 
 - Work in meter scale
-- 4m*4m floor panels
-- 1m*4m*4m Walls
-- 1m*4m*4m Door Frames
-- 2m*3m*0.2m Doors
+- 4m*4m floor panels X
+- 1m*4m*4m Walls X
+- 1m*4m*4m Door Frames X
+- 2m*3m*0.2m Doors X
 
 NEED:
-- Cool looking space wall
-- Cool looking space wall with oval-ass looking window in the middle
-- Scienc-y Table (curvy legs and that kind of sci-fi A E S T H E T I C)
-- Those doors with the windows. U know the ones.
+- Cool looking space wall X
+- Cool looking space wall with oval-ass looking window in the middle X
+- Scienc-y Table (curvy legs and that kind of sci-fi A E S T H E T I C) X
+- Those doors with the windows. U know the ones. X
 - Some kind of science-y space pillar I can stick in the corner of the rooms to cover up the walls intersecting lol
-- light i can put on the ceiling
+- light i can put on the ceiling X
   - Normal light and a flourescent maybe?
-- VERY VERY VERY VERY simple, low poly, small dropship. No interior modeled except for the back part where the player would enter. Does NOT need detailed texturing unless everything else is done.
+- VERY VERY VERY VERY simple, low poly, small dropship. No interior modeled except for the back part where the player would enter. Does NOT need detailed texturing unless everything else is done. X 
 	- Like as in the back of the ship has a ramp that drops down, player walks up it, and is in a small little cubby where the game ends.
 
 EXTRA IF THERE IS TIME:
 - Some space plant(s?)
 - Stand holding a few vials
-- Retro-Scifi Computer Monitor (because always)
+- Retro-Scifi Computer Monitor (because always) X
 - Rubble
   - Iron Beams
   - Rocks
-- Very low poly, small moon surface.
+- Very low poly, small moon surface. X
 	- Literally a subdivided plane w/ noise displacement & some craters
 

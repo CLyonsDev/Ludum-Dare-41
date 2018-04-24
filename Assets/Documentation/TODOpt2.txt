@@ -1,0 +1,54 @@
+THINGS WE NEED TO DO IN 19 HOURS:
+
+General:
+- Pogi Voice Lines
+- Charging Station X
+- Music
+- Main Menu
+- Credits
+- Check companion path and don't drain stats if campanion cannot reach player. [X]
+- Companion don't say voice lines while charging (Or drain stats) [X]
+- Music
+- Charging Station Companion Voices [X]
+- Particle Fog
+- Flashlight Recharge when put away
+
+Level 1:
+- Lights X
+- Computer Terminal X
+
+Level 2:
+- Regroup w Dog X
+- Basement Walls X
+- Doors X
+- Radio [X]
+  - Pogi Voice Line Hookup [X]
+
+Level 3:
+- Create it
+  - Hangar w/ plasma field
+- Ending Cutscene
+- Monster Chase Logic
+  (Monster is always persuing player in this level)
+- Maybe a ton of monsters coming in from everywhere as player runs to exit?
+
+
+
+
+Most important things to do:
+- Finish level 2 [X]
+- Charging Station [X]
+- Main Menu [X]
+- Credits [/2]
+- Create Level 3 [X]
+- Companion Path & Stat Drain [X]
+- Level 2 light flash [X]
+- All levels ambient flash [X]
+- Flashlight does not trigger on door open [X]
+- DISABLE NEXT LEVEL ON SPACE BAR [X]
+- If enough time passes w/o encounter, reposition enemy.
+- FLASHLIGHT RANGE!
+- Flashlight FOV Damage?
+- Place Charging Stations <<<----- IMPORTANT DO THIS BEFORE SUBMIT
+
+BUILD LIGHTS BEFORE SHIPPING!!!!!!!!!!!!

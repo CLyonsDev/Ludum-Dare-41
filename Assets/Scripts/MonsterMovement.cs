@@ -17,20 +17,26 @@ public class MonsterMovement : MonoBehaviour {
     private bool canMove = true;
     public bool moveEnabled = true;
 
-    private bool seenPlayer = false;
+    public bool seenPlayer = false;
 
     private float runDist = 25f;
     private float sprintDist = 12f;
 
     private float wanderDist = 10f;
 
-    private float wanderSpeed = 1f;
-    private float walkSpeed = 2f;
-    private float runSpeed = 4f;
-    private float sprintSpeed = 6f;
+    private float wanderSpeed = 3f;
+    private float walkSpeed = 4.5f;
+    private float runSpeed = 5.5f;
+    private float sprintSpeed = 7f;
 
     private Vector3 wanderDest;
     private bool wandering = true;
+    private bool validPath = false;
+    public bool spawned = true;
+
+    private float maxWaitTime = 35f;
+    private float waitTime = 0;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -49,6 +55,14 @@ public class MonsterMovement : MonoBehaviour {
         if (!moveEnabled)
             return;
 
+        waitTime += Time.deltaTime;
+        if(waitTime >= maxWaitTime && !vis.isBurned && !seenPlayer && canMove && moveEnabled)
+        {
+            Debug.Log("Borring, repositioning.");
+            waitTime = 0f;
+            vis.StartCoroutine(vis.Reposition(true));
+        }
+
         canMove = !vis.isBurned;
 
         MovementLogic();
@@ -60,6 +74,11 @@ public class MonsterMovement : MonoBehaviour {
         if (!canMove || healthScript.isDead)
         {
             agent.SetDestination(transform.position);
+            if(agent.pathStatus != NavMeshPathStatus.PathComplete)
+            {
+                Debug.Log("Cannot reach player. Repositioning...");
+                vis.StartCoroutine(vis.Reposition(true));
+            }
             return;
         }
         else if(seenPlayer)
@@ -67,15 +86,21 @@ public class MonsterMovement : MonoBehaviour {
             // Chase
             float dist = Vector3.Distance(transform.position, playerTransform.position);
 
-            if(dist <= sprintDist)
+            if(dist <= sprintDist && agent.speed != sprintSpeed)
             {
+                Debug.Log("Sprint");
                 agent.speed = sprintSpeed;
-            }else if(dist > sprintDist && dist <= runDist)
+                MonsterSoundManager._Instance.SetLoop(MonsterSoundManager._Instance.closeSound);
+            }else if(dist > sprintDist && dist <= runDist && agent.speed != runSpeed)
             {
+                Debug.Log("Run");
+                MonsterSoundManager._Instance.SetLoop(MonsterSoundManager._Instance.midSound);
                 agent.speed = runSpeed;
             }
-            else
+            else if(agent.speed != walkSpeed && dist > sprintDist && dist > runDist)
             {
+                Debug.Log("Walk");
+                MonsterSoundManager._Instance.SetLoop(null);
                 agent.speed = walkSpeed;
             }
 
@@ -91,6 +116,7 @@ public class MonsterMovement : MonoBehaviour {
         }
         else
         {
+            MonsterSoundManager._Instance.SetLoop(null);
             // """"Wander"""""
             // Technically we're wandering but with the intention of always eventually finding the player.
             agent.speed = wanderSpeed;
@@ -109,35 +135,35 @@ public class MonsterMovement : MonoBehaviour {
                 }
             }
 
-            if(Vector3.Distance(transform.position, agent.destination) <= agent.stoppingDistance)
+            if(Vector3.Distance(transform.position, agent.destination) <= agent.stoppingDistance && !wandering)
             {
                 wandering = true;
             }
 
             if (wandering)
             {
-                // God please have mercy on my soul
-                while (true)
-                {
-                    Vector2 circle = Random.insideUnitCircle * 10f;
-                    Vector3 pos = new Vector3(circle.x, 0, circle.y);
-                    pos += playerTransform.position;
-
-                    Ray r = new Ray(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100);
-                    RaycastHit hit;
-                    Debug.DrawRay(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100, Color.yellow, 25f);
-                    if (Physics.Raycast(r, out hit))
-                    {
-                        Debug.Log("Location Found.");
-                        pos.y = hit.point.y;
-                        wanderDest = pos;
-                        Debug.DrawLine(pos, new Vector3(pos.x, pos.y + 100, pos.z), Color.green, 15f);
-                        agent.SetDestination(wanderDest);
-                        wandering = false;
-                        break;
-                    }
-                }
+                agent.SetDestination(playerTransform.position);
             }
         }
+
+        if(!spawned)
+        {
+            NavMeshPath pathToPlayer = new NavMeshPath();
+            agent.CalculatePath(agent.destination, pathToPlayer);
+            if (pathToPlayer.status == NavMeshPathStatus.PathComplete)
+            {
+                //Debug.Log("Good path");
+            }
+            else
+            {
+                Debug.LogWarning("Bad path");
+                // vis.StartCoroutine(vis.Reposition(true));
+            }
+            if (!agent.isOnNavMesh)
+            {
+                //vis.StartCoroutine(vis.Reposition(true));
+                agent.Warp(vis.safetySpawnPoint.position);
+            }
+        }   
     }
 }

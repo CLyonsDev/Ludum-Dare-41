@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33754158885534734}
   - component: {fileID: 65232208580892894}
   - component: {fileID: 23600985300339350}
-  m_Layer: 17
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,8 +37,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4674156020096594}
-  - component: {fileID: 208865730787548478}
-  m_Layer: 17
+  m_Layer: 13
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +53,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4708331943896076}
   - component: {fileID: 95014282093438746}
-  m_Layer: 17
+  - component: {fileID: 114411193953040330}
+  m_Layer: 13
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4521556452165894}
-  m_Layer: 17
+  m_Layer: 13
   m_Name: Hinge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,18 +201,15 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!208 &208865730787548478
-NavMeshObstacle:
+--- !u!114 &114411193953040330
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1244968767861404}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 1, y: 1, z: 0.14}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_GameObject: {fileID: 1541175866490510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e2bfed732ff0254faaba7914ba966c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockNum: 1

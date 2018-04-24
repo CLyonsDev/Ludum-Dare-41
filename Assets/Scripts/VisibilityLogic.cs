@@ -8,7 +8,7 @@ public class VisibilityLogic : MonoBehaviour
     public GameObject placeholder;
 
     private Transform playerTransform;
-    private Transform safetySpawnPoint;
+    public Transform safetySpawnPoint;
     private FlashlightLogic flashlight;
     private MonsterHealth healthScript;
     private MonsterMovement moveScript;
@@ -18,7 +18,7 @@ public class VisibilityLogic : MonoBehaviour
     private bool wasBurned = false;
 
     private float minRelocationDist = 25f;
-    private float maxRelocationDist = 50f;
+    private float maxRelocationDist = 40f;
 
     // Use this for initialization
     void Start()
@@ -26,6 +26,7 @@ public class VisibilityLogic : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         safetySpawnPoint = GameObject.FindGameObjectWithTag("MonsterSafetySpawn").transform;
         flashlight = playerTransform.GetComponentInChildren<FlashlightLogic>();
+        moveScript = GetComponent<MonsterMovement>();
         healthScript = GetComponent<MonsterHealth>();
     }
 
@@ -58,17 +59,12 @@ public class VisibilityLogic : MonoBehaviour
             healthScript.StopDamage();
             Reposition(false);
         }
-
-        //TODO: Remove this
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //Reposition(true);
-            StartCoroutine(Reposition(true));
-        }
     }
 
     public IEnumerator Reposition(bool overrideTests)
     {
+        moveScript.spawned = false;
+
         if((isSeen && wasBurned) || overrideTests)
         {
             bool b = false;
@@ -77,6 +73,7 @@ public class VisibilityLogic : MonoBehaviour
             while (!b)
             {
                 Vector2 circle = Random.insideUnitCircle * maxRelocationDist;
+                //Random.Range(-20, 20)
                 Vector3 pos = new Vector3(circle.x, Random.Range(-20, 20), circle.y);
                 GameObject g = (GameObject)Instantiate(placeholder, pos, Quaternion.identity);
 
@@ -93,15 +90,16 @@ public class VisibilityLogic : MonoBehaviour
                     }
                     else
                     {
-                        Ray r = new Ray(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100);
+                        Ray r = new Ray(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 2);
                         RaycastHit hit;
-                        Debug.DrawRay(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 100, Color.red, 25f);
+                        Debug.DrawRay(new Vector3(pos.x, pos.y + 2, pos.z), Vector3.down * 2, Color.red, 25f);
                         if (Physics.Raycast(r, out hit))
                         {
                             Debug.Log("Location Found.");
                             pos.y = hit.point.y;
                             this.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(pos);
                             Destroy(g);
+                            b = true;
                             break;
                         }
                         else

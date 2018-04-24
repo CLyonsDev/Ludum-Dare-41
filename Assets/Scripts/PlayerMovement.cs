@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Rigidbody characterRigidbody;
 
-    private float moveSpeed = 5f;
+    private float moveSpeed = 4f;
 
 
 	// Use this for initialization

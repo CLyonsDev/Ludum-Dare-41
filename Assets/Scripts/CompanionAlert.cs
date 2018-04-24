@@ -8,6 +8,7 @@ public class CompanionAlert : MonoBehaviour {
     private Transform monsterTransform;
 
     public Light[] allLights;
+    private Light[] eyeLights;
 
     private RotateOverTime dogLight;
     private CompanionSoundManager soundManager;
@@ -16,23 +17,38 @@ public class CompanionAlert : MonoBehaviour {
     private Color[] lightColors;
     private Color prevColor;
 
-    private int state = 0; // 0 = Normal, 1 = Alert, 2 = Danger
+    private Material alertLightMaterial;
+    public Color[] alertLightColors; // 0 = Normal, 1 = Alert, 2 = Danger
+
+    private int state = -1; // 0 = Normal, 1 = Alert, 2 = Danger
 
     private float warningDist;
     private float dangerDist;
 
-    private float bestWarningDist = 25f;
-    private float bestDangerDist = 12f;
+    private float bestWarningDist = 30f;
+    private float bestDangerDist = 17f;
     private float worstDangerDist = 15f;
     private float worstWarningDist = 7f;
 
 	// Use this for initialization
 	void Start () {
-        allLights = GetComponentsInChildren<Light>();
+        allLights = GameObject.FindGameObjectWithTag("CompanionAlertLights").GetComponentsInChildren<Light>();
+        eyeLights = GameObject.FindGameObjectWithTag("CompanionEyeLights").GetComponentsInChildren<Light>();
+        Material[] mats = transform.Find("Graphics").Find("robot_dog_ludum").Find("AlertLight").GetComponent<Renderer>().materials;
+        foreach (Material m in mats)
+        {
+            if(m.name.Equals("Companion_Alarm (Instance)"))
+            {
+                // Debug.Log("Set Light.");
+                alertLightMaterial = m;
+                break;
+            }
+        }
         dogLight = GetComponentInChildren<RotateOverTime>();
         soundManager = CompanionSoundManager._Instance;
 
         SetAlertStatus(true);
+        ChangeLights(0);
     }
 
     // Update is called once per frame
@@ -77,8 +93,13 @@ public class CompanionAlert : MonoBehaviour {
         if (state == s)
             return;
 
+        if (state == -1)
+            state = 0;
+
         Debug.Log("Changing State to " + s);
 
+        alertLightMaterial.color = alertLightColors[s];
+        alertLightMaterial.SetColor("_EmissionColor", alertLightColors[s]);
         prevColor = lightColors[state];
         state = s;
     }

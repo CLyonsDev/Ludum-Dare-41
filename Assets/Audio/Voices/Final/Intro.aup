@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no" ?>
 <!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
-<project xmlns="http://audacity.sourceforge.net/xml/" projname="Intro_data" version="1.3.0" audacityversion="2.1.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="49.1627062359" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Intro_data" version="1.3.0" audacityversion="2.1.3" sel0="36.9098949475" sel1="39.6982849702" vpos="160" h="0.0000000000" zoom="6.0519001833" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
 	<tags>
+		<tag name="TITLE" value="Ludum Dare # 41"/>
 		<tag name="YEAR" value="2018"/>
-		<tag name="TITLE" value="Intro"/>
-		<tag name="ARTIST" value="Collin Lyons (ft. Cthulhu&apos;s Abode)"/>
+		<tag name="ARTIST" value="Collin Lyons (&amp; Cthulhu&apos;s Abode!)"/>
 		<tag name="COMMENTS" value="Ludum Dare #48"/>
 	</tags>
 	<wavetrack name="Intro_Tony_Scientist01_Line00_Take03" channel="0" linked="1" mute="0" solo="0" height="150" minimized="1" isSelected="0" rate="44100" gain="1.0" pan="0.0">
@@ -99,7 +99,7 @@
 			<envelope numpoints="0"/>
 		</waveclip>
 	</wavetrack>
-	<wavetrack name="Rumble" channel="0" linked="1" mute="0" solo="0" height="150" minimized="1" isSelected="1" rate="48000" gain="1.0" pan="0.0">
+	<wavetrack name="Rumble" channel="0" linked="1" mute="0" solo="0" height="150" minimized="1" isSelected="0" rate="48000" gain="1.0" pan="0.0">
 		<waveclip offset="10.82784580">
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="180392">
 				<waveblock start="0">
@@ -109,7 +109,7 @@
 			<envelope numpoints="0"/>
 		</waveclip>
 	</wavetrack>
-	<wavetrack name="Rumble" channel="1" linked="0" mute="0" solo="0" height="150" minimized="1" isSelected="1" rate="48000" gain="1.0" pan="0.0">
+	<wavetrack name="Rumble" channel="1" linked="0" mute="0" solo="0" height="150" minimized="1" isSelected="0" rate="48000" gain="1.0" pan="0.0">
 		<waveclip offset="10.82784580">
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="180392">
 				<waveblock start="0">
@@ -412,6 +412,70 @@
 			<sequence maxsamples="262144" sampleformat="262159" numsamples="200887">
 				<waveblock start="0">
 					<simpleblockfile filename="e0000d80.au" len="200887" min="-1.0" max="0.999969" rms="0.223332"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Moans_01" channel="0" linked="1" mute="0" solo="0" height="150" minimized="1" isSelected="1" rate="44100" gain="0.079433" pan="0.0">
+		<waveclip offset="16.98000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1001876">
+				<waveblock start="0">
+					<simpleblockfile filename="e00009d8.au" len="262144" min="-1.018196" max="1.010626" rms="0.218461"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000812.au" len="262144" min="-0.925183" max="0.960773" rms="0.194874"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e0000a19.au" len="262144" min="-0.611767" max="0.674953" rms="0.129825"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e000083b.au" len="215444" min="-0.919452" max="1.000163" rms="0.1678"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Moans_01" channel="1" linked="0" mute="0" solo="0" height="150" minimized="1" isSelected="1" rate="44100" gain="0.079433" pan="0.0">
+		<waveclip offset="16.98000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="1001876">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000703.au" len="262144" min="-1.058815" max="1.001221" rms="0.213575"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000b25.au" len="262144" min="-0.965003" max="0.941193" rms="0.189791"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e0000af1.au" len="262144" min="-0.690312" max="0.649805" rms="0.13455"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e000084d.au" len="215444" min="-0.945095" max="0.978381" rms="0.163346"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Whisper_01" channel="0" linked="1" mute="0" solo="0" height="20" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="25.48346938">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="290088">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000d62.au" len="262144" min="-0.438362" max="1.073455" rms="0.171351"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000bef.au" len="27944" min="-0.000243" max="0.000219" rms="0.000137"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Whisper_01" channel="1" linked="0" mute="0" solo="0" height="20" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="25.48346938">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="290088">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000a97.au" len="262144" min="-0.389187" max="1.09095" rms="0.171358"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0000bcf.au" len="27944" min="-0.000255" max="0.000241" rms="0.000143"/>
 				</waveblock>
 			</sequence>
 			<envelope numpoints="0"/>

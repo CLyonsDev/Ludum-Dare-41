@@ -7,17 +7,23 @@ public class CollectItem : MonoBehaviour {
     public LayerMask collectionLM;
     public LayerMask companionLM;
     public LayerMask doorLM;
+    public LayerMask unlockerLM;
+    public LayerMask chargingStationLM;
 
     private Transform player;
 
-    public float collectDist = 0.5f;
+    public float collectDist = 1f;
     public bool lookingAtItem = false;
     public bool lookingAtCompanion = false;
     public bool lookingAtDoor = false;
+    public bool lookingAtChargingStation = false;
+    public bool lookingAtUnlocker = false;
 
     private CompanionSoundManager soundManager;
 
     public static CollectItem _Instance;
+    [HideInInspector]
+    public Vector3 station;
 
     private void Awake()
     {
@@ -39,12 +45,21 @@ public class CollectItem : MonoBehaviour {
 
         if(Physics.Raycast(ray, out hit, collectDist, collectionLM))
         {
+            if (lookingAtCompanion || lookingAtDoor || lookingAtUnlocker)
+                return;
+
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_collect);
             lookingAtItem = true;
             if (Input.GetButtonDown("Fire1"))
             {
+                if (hit.transform.tag.Equals("Radio"))
+                {
+                    Destroy(hit.transform.parent.parent.gameObject);
+                    PlayerSoundManager._Instance.PlaySound(PlayerSoundManager._Instance.radioIntro);
+                    return;
+                }
+
                 // Pick up object
-                Debug.Log("Picked up item");
                 switch (hit.transform.root.GetComponent<Pickup>().pickupType)
                 {
                     case Pickup.PickupTypeList.Battery:
@@ -57,56 +72,103 @@ public class CollectItem : MonoBehaviour {
                         Destroy(hit.transform.root.gameObject);
                         PlayerInventory._Instance.AddItem(Pickup.PickupTypeList.Oil);
                         break;
+                    case Pickup.PickupTypeList.Key:
+                        Debug.Log("Picked up a key.");
+                        Destroy(hit.transform.root.gameObject);
+                        PlayerInventory._Instance.AddItem(Pickup.PickupTypeList.Key, hit.transform.root.GetComponent<Pickup>().keyID);
+                        break;
                 }
             }
-        }else if (lookingAtItem && !lookingAtCompanion && !lookingAtDoor)
+        }else if (lookingAtItem && !lookingAtCompanion && !lookingAtDoor && !lookingAtUnlocker && !lookingAtChargingStation)
         {
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
             lookingAtItem = false;
         }
 
-        if(Physics.Raycast(ray, out hit, collectDist, companionLM))
+        if (Physics.Raycast(ray, out hit, collectDist, companionLM))
         {
+            if (lookingAtItem || lookingAtDoor)
+                return;
+
             lookingAtCompanion = true;
 
             if (PlayerInventory._Instance.numOil > 0)
             {
                 CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_oil);
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                 {
                     Debug.Log("Refilling Companion");
-                    hit.transform.root.GetComponent<CompanionNeeds>().AddEnergy(100);
+                    GameObject.FindGameObjectWithTag("NeedsContainer").GetComponent<CompanionNeeds>().AddFood(100);
                     PlayerInventory._Instance.RemoveItem(Pickup.PickupTypeList.Oil);
                     soundManager.PlaySound(soundManager.giveFood);
                 }
             }
             else
             {
+                lookingAtCompanion = true;
                 CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_oil_depleted);
             }
         }
-        else if (lookingAtCompanion && !lookingAtItem && !lookingAtDoor)
+        else if (lookingAtCompanion && !lookingAtItem && !lookingAtDoor && !lookingAtUnlocker && !lookingAtChargingStation)
         {
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
             lookingAtCompanion = false;
         }
 
-        if(Physics.Raycast(ray, out hit, collectDist, doorLM))
+        if (Physics.Raycast(ray, out hit, collectDist, doorLM))
         {
+            if (lookingAtCompanion || lookingAtItem)
+                return;
+
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_door);
             lookingAtDoor = true;
             if (Input.GetButtonDown("Fire1"))
             {
-                Animator anim = hit.transform.root.GetComponent<Animator>();
-                bool b = anim.GetBool("isOpen");
-                anim.SetBool("isOpen", !b);
-                anim.SetTrigger("interact");
+                hit.transform.root.GetComponent<DoorLock>().Open();
             }
         }
-        else if (!lookingAtCompanion && !lookingAtItem && lookingAtDoor)
+        else if (!lookingAtCompanion && !lookingAtItem && lookingAtDoor && !lookingAtUnlocker && !lookingAtChargingStation)
         {
             CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
             lookingAtDoor = false;
+        }
+
+        if(Physics.Raycast(ray, out hit, collectDist, unlockerLM))
+        {
+            if (lookingAtCompanion || lookingAtItem)
+                return;
+
+            CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_door);
+
+            lookingAtUnlocker = true;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                hit.transform.root.GetComponent<RemoteUnlock>().UnlockDoor();
+            }
+        }else if (lookingAtUnlocker)
+        {
+            lookingAtUnlocker = false;
+            CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
+        }
+
+        if(Physics.Raycast(ray, out hit, collectDist, chargingStationLM))
+        {
+            if (lookingAtCompanion || lookingAtItem)
+                return;
+
+            CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_collect);
+            lookingAtChargingStation = true;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Debug.Log("Recharging");
+                station = hit.transform.root.Find("Refill Point").position;
+                CompanionState._Instance.transform.GetComponent<CompanionMovement>().rechargingStationLoc = station;
+                CompanionState._Instance.transform.GetComponent<CompanionState>().SetState(CompanionState.CompanionStateList.movingToRecharge);
+            }
+        }else if(lookingAtChargingStation)
+        {
+            lookingAtChargingStation = false;
+            CursorManager._Instance.ChangeCursorState(CursorManager.CursorStates.c_default);
         }
     }
 }

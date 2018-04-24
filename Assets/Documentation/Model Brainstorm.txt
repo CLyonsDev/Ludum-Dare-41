@@ -1,12 +1,12 @@
 Models should be low poly(?)
 
 Required Models:
-- Robot Dog
-- Battery
-- Oil Can
-- Key
+- Robot Dog X
+- Battery X
+- Oil Can X
+- Key X
 - KeyCard
-- Flashlight
+- Flashlight X
 
 Oil Can:
 http://i1.adis.ws/i/washford/589160?w=637&h=403

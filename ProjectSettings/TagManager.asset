@@ -10,6 +10,15 @@ TagManager:
   - ResourceTextContainer
   - Crosshair
   - MonsterSafetySpawn
+  - CompanionWarningContainer
+  - FadeToBlack
+  - NeedsContainer
+  - Companion
+  - CompanionAlertLights
+  - CompanionEyeLights
+  - WarningLights
+  - Radio
+  - MonsterSpawn
   layers:
   - Default
   - TransparentFX
@@ -28,12 +37,12 @@ TagManager:
   - No_Render
   - Recharge Station
   - Processing Volume
-  - Door
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Exterior Environment
+  - WarningLight
+  - RemoteUnlocker
+  - Radio
+  - BallCollider
+  - Moon
   - 
   - 
   - 

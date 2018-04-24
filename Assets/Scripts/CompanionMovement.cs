@@ -5,11 +5,12 @@ using UnityEngine.AI;
 
 public class CompanionMovement : MonoBehaviour {
 
-    private Transform playerTransform;
+    [HideInInspector]
+    public Transform playerTransform;
     private Transform ballTransform;
     private NavMeshAgent agent;
 
-    private float bestSpeed = 2.5f;
+    private float bestSpeed = 3.5f;
     private float worstSpeed = 0.85f;
 
     private float stopDist;
@@ -18,19 +19,27 @@ public class CompanionMovement : MonoBehaviour {
     public bool reachedDest = false;
 
     CompanionState state;
+    [HideInInspector]
+    public Vector3 rechargingStationLoc;
 
 	// Use this for initialization
 	void Start () {
         agent = GetComponent<NavMeshAgent>();
         state = CompanionState._Instance;
         stopDist = agent.stoppingDistance;
+        UpdateSpeed(true);
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         ballTransform = playerTransform.GetComponent<EquipmentManager>().equipment[1].transform;
         //ballTransform = GameObject.FindGameObjectWithTag("Ball").transform;
         // ballTransform.gameObject.SetActive(false);
-        agent.SetDestination(playerTransform.position);
+        // agent.SetDestination(playerTransform.position);
 	}
+
+    public void SetRechargeGoal(Vector3 v)
+    {
+        rechargingStationLoc = v;
+    }
 	
     public void StopMoving()
     {
@@ -48,6 +57,9 @@ public class CompanionMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        if (!CompanionState._Instance.activated)
+            return;
+
         float distToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
         // Debug.Log("Moving to player: " + distToPlayer);
@@ -77,10 +89,10 @@ public class CompanionMovement : MonoBehaviour {
             // Debug.Log(agent.pathStatus);
             if(agent.pathStatus == NavMeshPathStatus.PathInvalid)
             {
-                ballTransform.GetComponent<ThrowBall>().ReturnBall();
+                ballTransform.GetComponent<ThrowBall>().ReturnBall(false);
             }
             float distToBall = Vector3.Distance(transform.position, ballTransform.position);
-            agent.stoppingDistance = 0.75f;
+            agent.stoppingDistance = 1.2f;
             if(distToBall > agent.stoppingDistance && !reachedDest)
             {
                 agent.SetDestination(ballTransform.position);
@@ -102,6 +114,7 @@ public class CompanionMovement : MonoBehaviour {
 
                 ballTransform.GetComponent<Rigidbody>().isKinematic = true;
                 ballTransform.SetParent(transform.Find("MountLoc"));
+                ballTransform.GetComponent<ThrowBall>().grabbedByCompanion = true;
                 ballTransform.transform.localPosition = Vector3.zero;
 
                 if(distToPlayer > agent.stoppingDistance)
@@ -113,8 +126,21 @@ public class CompanionMovement : MonoBehaviour {
                 {
                     Debug.Log("Ball Returned.");
                     // Ball has been returned.
-                    ballTransform.GetComponent<ThrowBall>().ReturnBall();
+                    ballTransform.GetComponent<ThrowBall>().ReturnBall(true);
                 }
+            }
+        }
+        else if(state.currentState == CompanionState.CompanionStateList.movingToRecharge)
+        {
+            agent.stoppingDistance = 0.25f;
+            if(Vector3.Distance(transform.position, rechargingStationLoc) <= agent.stoppingDistance)
+            {
+                agent.stoppingDistance = stopDist;
+                CompanionNeeds._Instance.StartRecharge(true, true);
+            }
+            else
+            {
+                agent.SetDestination(rechargingStationLoc);
             }
         }
     }

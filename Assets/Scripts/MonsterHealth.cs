@@ -68,8 +68,11 @@ public class MonsterHealth : MonoBehaviour {
 
         isDead = true;
         Debug.Log("MONSTER DOWN!");
-        yield return new WaitForSeconds(1);
+        // yield return new WaitForSeconds(1);
         // Debug.Log("Respawning");
+        MonsterSoundManager._Instance.SetLoop(MonsterSoundManager._Instance.farSound);
+        GetComponent<MonsterMovement>().seenPlayer = false;
+        MonsterSoundManager._Instance.SetLoop(null);
         StartCoroutine(visLogic.Reposition(false));
 
         yield return new WaitForSeconds(respawnTime);
